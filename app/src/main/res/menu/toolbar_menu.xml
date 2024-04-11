@@ -4,14 +4,12 @@
 
     <item
         android:icon="@drawable/ic_search"
-        android:title="Search"
-        app:showAsAction="always" />
-<!--    <item-->
-<!--        android:icon="@drawable/ic_search"-->
-<!--        android:title="Subscribe"-->
-<!--        app:showAsAction="always" />-->
-<!--    <item-->
-<!--        android:icon="@drawable/ic_search"-->
-<!--        android:title="Setting"-->
-<!--        app:showAsAction="always" />-->
+        android:title="Search" />
+    <item
+        android:icon="@drawable/ic_search"
+        android:title="Subscribe" />
+    <item
+        android:icon="@drawable/ic_search"
+        android:title="Setting"
+       />
 </menu>

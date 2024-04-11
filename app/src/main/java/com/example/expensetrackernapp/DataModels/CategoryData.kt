@@ -1,3 +1,39 @@
+package com.example.expensetrackernapp.DataModels
+
+import androidx.recyclerview.widget.RecyclerView
+
+class DataModel{
+
+    companion object{
+
+
+        var incomeAmount : Double = 0.00
+        var expenseAmount : Double = 0.00
+        var TotalAmount :   Double = 0.00
+
+
+
+
+
+        val amountList : MutableList<String> =  mutableListOf()
+        val accountList : MutableList<String> =  mutableListOf()
+        val timeList : MutableList<String> =  mutableListOf()
+        val noteList : MutableList<String> =  mutableListOf()
+        val categoryList : MutableList<String> =  mutableListOf()
+
+
+        fun addData(amount : String, account : String, time : String, category : String)
+        {
+            amountList.add(amount)
+            accountList.add(account)
+            timeList.add(time)
+            categoryList.add(category)
+        }
+
+    }
+}
+
+
 //package com.example.expensetrackernapp.DataModels
 //
 //private class CategoryData {
@@ -37,8 +73,3 @@
 //    {
 //        this.categoryImage = categoryImage
 ////    }
-//
-//
-//
-//
-//}

@@ -115,6 +115,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvHomeTransIncome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0.00"
@@ -136,6 +137,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvHomeTransExpense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0.00"
@@ -159,6 +161,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvHomeTransTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0.00"
@@ -171,7 +174,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCashEntries"
+        android:id="@+id/rvHomeTransEntries"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -5,11 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.expensetrackernapp.R
 
-class RVAdapter() : Adapter<ViewHolder>() {
+
+class RVAdapter(val amounts : List<String>, val accounts : List<String>, val times : List<String>, val categories : List<String>) : Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflate = LayoutInflater.from(parent.context)
@@ -17,12 +19,31 @@ class RVAdapter() : Adapter<ViewHolder>() {
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+       holder.amount.text = amounts[position]
+        holder.categry.text = accounts[position]
+        holder.date.text = times[position]
+        holder.title.text = categories[position]
+
+        // changing color of account dynamically
+
+        val account = accounts[position]
+
+        val tintList = when(account)
+        {
+            "cash" -> R.color.green
+            "bank" -> R.color.bank
+            else -> R.color.yellow
+        }
+
+        holder.categry.setBackgroundColor(tintList)
+
+
+
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+    override fun getItemCount(): Int {
+        return amounts.size
     }
 }
 
