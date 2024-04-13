@@ -4,34 +4,34 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.DatePicker
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expensetrackernapp.DataModels.DataModel
+import com.example.expensetrackernapp.DataModels.TransacDataClass
 import com.example.expensetrackernapp.R
 import com.example.expensetrackernapp.adapters.RVAdapter
+import com.example.expensetrackernapp.adapters.RVAdapterCategoryList
+import com.example.expensetrackernapp.adapters.onCategoryClickListenerInterface
 import java.text.SimpleDateFormat
 import java.util.*
 import com.example.expensetrackernapp.databinding.ActivityAddNewTransBinding
 import com.google.android.material.textfield.TextInputEditText
 
 
-class AddNewTrans : AppCompatActivity() {
+class AddNewTrans : AppCompatActivity() , onCategoryClickListenerInterface{
     private lateinit var binding: ActivityAddNewTransBinding
 
     val categoriesList = listOf<String>("Business","Personal","Health","Education","Travel")
+    val transactionMethodsList = listOf<String>("Cash","Bank","PayTM","PayPal","Other")
 
-    // =============== experiment ========================
+    private var categoryDialog: AlertDialog? = null
+    private lateinit var categorySelected : String
 
-    // lists from data Model
-
-    val amountList = DataModel.amountList
-    val accountList = DataModel.accountList
-    val timeList = DataModel.timeList
-    val noteList = DataModel.noteList
-    val categoryList = DataModel.categoryList
+    // getting categories Data
+    val categoriesAdapter = RVAdapterCategoryList(DataModel.CategoriesList)
 
 
 
-//    private lateinit var adapter : RecyclerView
 
     private lateinit var adapter : RVAdapter
 
@@ -41,12 +41,14 @@ class AddNewTrans : AppCompatActivity() {
     lateinit var etAmount: TextInputEditText
     lateinit var etNote: TextInputEditText
     lateinit var etCategory: TextInputEditText
+    var categoryImageID : Int = -1
 
     // ---------------- experiment ----------------------
 
     var incomeOrExpense = 0
 
 
+    // getting date and time
     val calendar: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,21 +59,24 @@ class AddNewTrans : AppCompatActivity() {
         // =============== experiment ========================
 
 
+        categoriesAdapter.setOnCategoryClickListenerInterface(this)
+        // getting view references in variables
         etDate = binding.etDate
         etAccount = binding.etAccount
         etAmount = binding.etAmount
         etNote = binding.etDate
         etCategory = binding.etCategory
 
-        // ---------------- experiment ----------------------
-
-
-        // collecting data from et's
-
         binding.btnAddTransac.setOnClickListener {
-            if (etAccount.text.toString().isNotEmpty() && etAmount.text.toString().isNotEmpty() && etDate.text.toString().isNotEmpty() && etNote.text.toString().isNotEmpty())
-            {
 
+            // collection user Info in variables
+            val userAmount = etAmount.text.toString()
+            val userTransMethod = etAccount.text.toString()
+            val userTime = etDate.text.toString()
+            val userCategory = etCategory.text.toString()
+
+            if (userAmount.isNotEmpty() && userTime.isNotEmpty() && userCategory.isNotEmpty() && userTransMethod.isNotEmpty() )
+            {
                 // directly update variables in  data model
 
                 if (incomeOrExpense == 0) {
@@ -81,12 +86,11 @@ class AddNewTrans : AppCompatActivity() {
                 }
                 DataModel.TotalAmount += etAmount.text.toString().toDouble()
 
-                amountList.add((etAmount.text.toString()))
-                accountList.add((etAccount.text.toString()))
-//                noteList.add((etNote.text.toString()))
-                timeList.add((etDate.text.toString()))
-                categoryList.add(etCategory.text.toString())
 
+                // EXP: Transactions Data Class
+
+                // adding user data to Transactions List<Data Class>
+                DataModel.Transactions.add(TransacDataClass(userAmount, userTransMethod, userTime,"note", userCategory,categoryImageID, incomeOrExpense))
 
             }
 
@@ -94,14 +98,18 @@ class AddNewTrans : AppCompatActivity() {
         }
 
 
-        binding.etCategory.setOnClickListener {
+        etCategory.setOnClickListener {
         showCategoriesDialog()
+        }
+
+        etAccount.setOnClickListener {
+        showtransactionMethodsDialog()
         }
 
         // ======================== Setting button background colors on selecting them ========================
         binding.btnIncome.setOnClickListener {
             binding.btnIncome.backgroundTintList = getColorStateList(R.color.green)
-            binding.btnExpense.backgroundTintList = getColorStateList(R.color.yellow)
+            binding.btnExpense.backgroundTintList = getColorStateList(R.color.colorPrimaryLight)
 
             // to track which is being entered (income/expense)
             incomeOrExpense = 0
@@ -109,7 +117,7 @@ class AddNewTrans : AppCompatActivity() {
 
         binding.btnExpense.setOnClickListener {
             binding.btnExpense.backgroundTintList = getColorStateList(R.color.red)
-            binding.btnIncome.backgroundTintList = getColorStateList(R.color.yellow)
+            binding.btnIncome.backgroundTintList = getColorStateList(R.color.colorPrimaryLight)
 
             // to track which is being entered (income/expense)
             incomeOrExpense = 1
@@ -123,13 +131,36 @@ class AddNewTrans : AppCompatActivity() {
 
     }
 
+
     private fun showCategoriesDialog() {
-        val categories = categoriesList.toTypedArray()
+
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_categories_rv_layout, null)
+
+        val rvCategories : RecyclerView = dialogView.findViewById(R.id.rvCategoriesDialog)
+
+        rvCategories.adapter = categoriesAdapter
+        rvCategories.layoutManager = GridLayoutManager(this,3)
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select a Category")
+            .setView(dialogView)
+
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        categoryDialog = builder.create()
+        categoryDialog?.show()
+    }
+
+    private fun showtransactionMethodsDialog() {
+
+        val categories = transactionMethodsList.toTypedArray()
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Transaction Method")
             .setItems(categories) { _, which ->
-                val selectedCategory = categoriesList[which]
-                binding.etCategory.setText(selectedCategory)
+                val selectedCategory = transactionMethodsList[which]
+                etAccount.setText(selectedCategory)
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
@@ -150,7 +181,7 @@ class AddNewTrans : AppCompatActivity() {
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
                 // Format the chosen date and set it to the TextInputEditText
-                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
                 etDate.setText(sdf.format(calendar.time))
             },
             calendar.get(Calendar.YEAR),
@@ -158,8 +189,14 @@ class AddNewTrans : AppCompatActivity() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
 
-
-
         datePicker.show()
     }
+
+    override fun onCategoryItemClick(itemPosition: Int) {
+        categorySelected = DataModel.CategoriesList[itemPosition].category
+        categoryImageID = DataModel.CategoriesList[itemPosition].categoryIcon
+        etCategory.setText(categorySelected)
+        categoryDialog?.dismiss()
+    }
+
 }

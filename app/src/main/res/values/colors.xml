@@ -6,7 +6,24 @@
     <color name="dark_yellow">#FFC107</color>
     <color name="green">#18B51E</color>
     <color name="red">#E91E1E</color>
-    <color name="bank">#4E4E4E</color>
+    <color name="bank">#626262</color>
+
+
+    <color name="business">#673AB7</color>
+    <color name="personal">#3F51B5</color>
+    <color name="travel">#4CAF50</color>
+    <color name="education">#FFEB3B</color>
+
+
+
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryLight">#9AFF5722</color>
+    <color name="colorPrimaryDark">#F1440D</color>
+    <color name="colorAccent">#AC4829</color>
+
+    <color name="colorDefault">#474242</color>
+
+
 
 
 </resources>

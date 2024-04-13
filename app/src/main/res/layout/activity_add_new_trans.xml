@@ -29,6 +29,7 @@
             app:cornerRadius="5dp"
             android:layout_weight="0.35"
             android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/colorPrimaryLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Income" />
@@ -38,6 +39,7 @@
             android:layout_weight="0.35"
             android:layout_marginStart="10dp"
             app:cornerRadius="5dp"
+            android:backgroundTint="@color/colorPrimaryLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Expense" />
@@ -78,8 +80,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:id="@+id/etAccount"
-            android:hint="Account" />
+            android:hint="Transaction Method" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
