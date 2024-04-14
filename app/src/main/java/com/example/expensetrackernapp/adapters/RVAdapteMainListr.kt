@@ -53,11 +53,11 @@ class RVAdapter(val Trans : List<TransacDataClass>,
                 "Travel" -> R.color.travel
                 else -> R.color.colorPrimary
             }
-
             holder.categoryIcon.backgroundTintList = ContextCompat.getColorStateList(holder.itemView.context, categoryIconColor)
 
 
 
+            // setting color of amount TextView in RV items
             if (Trans[position].incomeOrExpense == 0)
             {
                 holder.amount.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.green));
@@ -76,14 +76,11 @@ class RVAdapter(val Trans : List<TransacDataClass>,
                 "PayTM" -> R.color.yellow
                 else -> R.color.red
             }
-
-
             holder.transMethod.backgroundTintList = ContextCompat.getColorStateList(holder.itemView.context, tintList)
 
         }
 
         else {
-
             // In case currentDate doesn't match times[position], RecyclerView handles the visibility
             holder.itemView.visibility = View.GONE
 //            holder.tvNoTransac.visibility = View.VISIBLE
@@ -113,9 +110,9 @@ class ViewHolder(itemView: View, listener: onTransactionItemClickInterface) : Re
     val tvNoTransac = itemView.findViewById<TextView>(R.id.tvNoTransactionsYet)
 
 
-    // handling item clicks
-
+    // handling item clicks in init Block
     init {
+        // when clicked on RV item, we called onItemClick Method and return adapter position
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)
         }

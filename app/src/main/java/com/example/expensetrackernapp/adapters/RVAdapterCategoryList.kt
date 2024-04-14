@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.expensetrackernapp.DataModels.CategoryData
@@ -34,6 +35,22 @@ class RVAdapterCategoryList(val categoriesClass : List<CategoryData>)  : Adapter
     override fun onBindViewHolder(holder: CategoryListVH, position: Int) {
         holder.cName.text = categoriesClass[position].category
         holder.cImage.setImageResource(categoriesClass[position].categoryIcon)
+
+
+        // dynamic colors of category icon
+        val categoryIconColor = when(categoriesClass[position].category){
+            "Business" -> R.color.business
+            "Personal" -> R.color.personal
+            "Education" -> R.color.education
+            "Travel" -> R.color.travel
+            else -> R.color.colorPrimary
+        }
+
+        holder.cImage.backgroundTintList = ContextCompat.getColorStateList(holder.itemView.context, categoryIconColor)
+
+
+
+
     }
 
     override fun getItemCount(): Int {
